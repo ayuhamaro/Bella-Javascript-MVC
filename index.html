@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>Bella - Nanoscale Javascript MVC Framework</title>
+	</head>
+	<body>
+		<p>Bella - 奈米級Javascript MVC框架。以Javascript物件導向為基礎，結合jQuery，提供中小型網站輕便的MVC架構。<br />
+			讓持續的修改與新增功能得以保持維護性，同時將Ajax功能封裝，不用重複撰寫。路由機制使用Javascript的物件導向架構，一看就上手！</p>
+		
+		<div id="update">請按Update</div>
+		<input id="updateBtn" type="button" value="Update" />
+	
+		<div id="list">請按List</div>
+		<input id="listBtn" type="button" value="List" />
+		
+		<script type="text/javascript" src="javascript/jquery-1.9.0.min.js"></script>
+		<script type="text/javascript">
+			//Bella - Nanoscale Javascript MVC Framework Begin
+			var Jmvc = function BellaJMVC(){
+				this.Controller = { };
+				this.Model = function(uri, viewName, data){
+					var self = this;
+					$.ajax({ "type": "POST", "url": uri, "data": data, 
+						"success": function(r){ self.View[viewName]($.parseJSON(r)); },
+						"error": function(r){ /*...*/ }
+					});
+				};
+				this.View = { };
+				this.Init = function(){
+					var fNOP = function () {};
+					fNOP.prototype = this.prototype;
+					for(var cAction in this.Controller){
+						this.Controller[cAction].apply(this);
+						this.Controller[cAction].prototype = new fNOP;
+					}
+				};
+			}
+			//Bella - Nanoscale Javascript MVC Framework End
+			
+			//範例a
+			var a = new Jmvc();		//建立物件，我們建議頁面上的每個主要功能都建立一個物件
+			a.Controller.update = function(){	//為物件a建立update控制器
+				var self = this;	//因為JS的變數作用域，所以放入這句，如果你想用a.Model來呼叫模型，就無需本句
+				$('#updateBtn').bind('click', function(){	//使用jQuery進行事件綁定
+					self.Model('ajax/json.html', 'update', {"test":"1234"});
+					//呼叫模型將資料傳送到視圖，參數依序為Ajax資料源、目標視圖名稱、傳遞的資料物件(例如把一些輸入欄位或變數值包裝起來)
+				});
+			}
+			a.View.update = function(obj){	//為物件a建立update視圖，請注意，視圖名稱與控制器無關，視圖名稱是讓Model呼叫的參數
+				$('#update').html(obj.msg);	//視圖收到的資料已經是物件，Model已經將JSON轉換為物件
+			}
+			a.Init();	//啟用物件，讓物件a的所有控制器執行(並進行原型繼承)
+			
+			//範例b，原理與a是相同的
+			var b = new Jmvc();
+			b.Controller.list = function(){
+				var self = this;
+				$('#listBtn').bind('click', function(){
+					self.Model('ajax/json2.html', 'list', {});
+				});
+			}
+			b.View.list = function(obj){
+				$('#list').html(obj.msg);
+			}
+			b.Init();
+		</script>
+	</body>
+</html>
