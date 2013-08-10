@@ -28,11 +28,11 @@
                 };
                 this.View = { o: this };
                 this.Func = { o: this };
-				this.Init = function(ctrlNameStr){
+                this.Init = function(ctrlNameStr){
                     ctrlAaary = ctrlNameStr.split(',');
                     for(var i in ctrlAaary){ this.Ctrl[ctrlAaary[i]](); }
-				};
-			}
+                };
+            }
 
 
 
