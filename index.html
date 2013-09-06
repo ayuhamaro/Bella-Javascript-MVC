@@ -12,31 +12,7 @@
         <input id="listBtn" type="button" value="List" />
 		
         <script type="text/javascript" src="javascript/jquery-1.9.0.min.js"></script>
-        <script type="text/javascript">
-            var Jmvc = function BellaJMVC(){
-                this.Ctrl = { o: this };
-                this.Model = function(uri, viewNameStr, data){
-                    var self = this;
-                    $.ajax({ "type": "POST", "url": uri, "data": data, "dataType": "json",
-                        "success": function(r){
-                            if(typeof(r) !== 'object'){ r = $.parseJSON(r)}
-                            viewAaary = viewNameStr.split(',');
-                            for(var i in viewAaary){ self.View[viewAaary[i]](r); }
-                        },
-                        "error": function(r){ /*...*/ }
-                    });
-                };
-                this.View = { o: this };
-                this.Func = { o: this };
-                this.Init = function(ctrlNameStr){
-                    ctrlAaary = ctrlNameStr.split(',');
-                    for(var i in ctrlAaary){ this.Ctrl[ctrlAaary[i]](); }
-                };
-            }
-
-
-
-
+        <script type="text/javascript" src="javascript/jsmvc.js">
             var a = new Jmvc();
             a.Ctrl.update = function(){
                 var self = this.o;
@@ -65,8 +41,6 @@
                 $('#list').html(obj.msg);
             }
             b.Ctrl.list();
-			
-			
         </script>
     </body>
 </html>
