@@ -17,8 +17,9 @@ var Jmvc = function BellaJMVC(){
     this.View = { o: this };
     this.Func = { o: this };
     this.Var = { o: this };
-    this.Init = function(ctrlNameStr){
-        ctrlArray = ctrlNameStr.split(',');
-        for(var i in ctrlArray){ this.Ctrl[ctrlArray[i]](); }
+    this.Init = function(){
+        for(var i in this.Ctrl){
+            if(i.substring(0,2) == '__'){ this.Ctrl[i](); }
+        }
     };
 }
