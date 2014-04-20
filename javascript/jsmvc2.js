@@ -20,8 +20,8 @@ var Jsmvc2 = function BellaJMVC(){
                 viewHtml = viewHtml.replace(/\n/g, '');
                 viewHtml = viewHtml.replace(/\r/g, '');
                 if(placeId === null || dataObj === {}){
-                	callback(viewHtml);
-                	return false;
+                    callback(viewHtml);
+                    return false;
                 }
                 var viewCreateList = function(listObj, dataObj){
                     //取得清單名稱
@@ -64,8 +64,8 @@ var Jsmvc2 = function BellaJMVC(){
                             for(var key in keyNames){
                                 //如果有該屬性的佔位字元，就以物件屬性值覆寫佔位字元
                                 if(itemPlaceholderNames.indexOf(keyNames[key]) !== -1){
-                                    var rowHtml = rowHtml.replace(new RegExp('\\{\\{' + listAttrValue + '.' + keyNames[key] + '\\}\\}', 'g'), 
-                                                                            dataObj[listAttrValue][rowIndex][keyNames[key]]);
+                                    rowHtml = rowHtml.replace(new RegExp('\\{\\{' + listAttrValue + '.' + keyNames[key] + '\\}\\}', 'g'), 
+                                                                        dataObj[listAttrValue][rowIndex][keyNames[key]]);
                                 }
                             }
                         }
@@ -84,7 +84,7 @@ var Jsmvc2 = function BellaJMVC(){
                         }
                     }
                     return true;
-                }
+                };
                 //找出非物件的屬性鍵值，避免陣列資料
                 var valueNames = [];
                 for(var dataIndex in dataObj){
