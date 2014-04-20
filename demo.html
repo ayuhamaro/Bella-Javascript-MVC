@@ -3,9 +3,11 @@
     <head>
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
         <script type="text/javascript" src="jsmvc2.js"></script>
+        <meta charset='utf-8'>
+        <title>Bella 2.0測試</title>
     </head>
     <body>
-        <h1>View測試</h1>
+        <h1>Bella 2.0測試</h1>
         <div id="aaa"></div>
         <button type="button" id="go">測試</button>
         <script type="text/javascript">
@@ -20,15 +22,13 @@
             
             page.CallBack.go = function(obj){
                 var self = this.o;
-                self.View('view-code.html', 'aaa', obj, function(html){
+                self.View('view-code.html', obj, 'aaa', function(html){
                     console.log(html);
                 });
             }
             
-            
             page.Init();
             
-
         </script>
     </body>
 </html>
