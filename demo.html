@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="jsmvc2.js"></script>
+    </head>
+    <body>
+        <h1>View測試</h1>
+        <div id="aaa"></div>
+        <button type="button" id="go">測試</button>
+        <script type="text/javascript">
+            var page = new Jsmvc2();
+            
+            page.Ctrl.__init = function(){
+                var self = this.o;
+                $('#go').bind('click', function(){
+                    self.Model('ajax-test.html', 'go', {});
+                });
+            }
+            
+            page.CallBack.go = function(obj){
+                var self = this.o;
+                self.View('view-code.html', 'aaa', obj, function(html){
+                    console.log(html);
+                });
+            }
+            
+            
+            page.Init();
+            
+
+        </script>
+    </body>
+</html>
