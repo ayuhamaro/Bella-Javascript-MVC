@@ -2,13 +2,13 @@
 <html>
     <head>
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript" src="jsmvc2.js"></script>
+        <script type="text/javascript" src="javascript/jsmvc2.js"></script>
         <meta charset='utf-8'>
         <title>Bella 2.0測試</title>
     </head>
     <body>
         <h1>Bella 2.0測試</h1>
-        <div id="aaa"></div>
+        <div id="place"></div>
         <button type="button" id="go">測試</button>
         <script type="text/javascript">
             var page = new Jsmvc2();
@@ -16,13 +16,15 @@
             page.Ctrl.__init = function(){
                 var self = this.o;
                 $('#go').bind('click', function(){
+                    //從ajax-test.html取得JSON，成功即前往回呼控制器go，不傳遞任何資料，不定義擴增參數
                     self.Model('ajax-test.html', 'go', {});
                 });
             }
             
             page.CallBack.go = function(obj){
                 var self = this.o;
-                self.View('view-code.html', 'aaa', obj, function(html){
+                //從view-code.html載入視圖，數據綁定成功後填入元素place，導入來自模型的資料物件obj，完成時進行回呼
+                self.View('view-code.html', 'place', obj, function(html){
                     console.log(html);
                 });
             }
