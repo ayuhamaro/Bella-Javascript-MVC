@@ -12,7 +12,7 @@ var Jsmvc2 = function BellaJMVC(){
             "error": function(r){ console.log(r); }
         });
     };
-    this.View = function(uri, dataObj, placeId, callback){
+    this.View = function(uri, placeId, dataObj, callback){
         $.ajax({ "type": "GET", "url": uri, "dataType": "html",
             "success": function(viewHtml){
                 //清理特殊字元
