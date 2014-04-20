@@ -12,27 +12,27 @@ var Jsmvc2 = function BellaJMVC(){
             "error": function(r){ console.log(r); }
         });
     };
-    this.View = function(uri, placeId, dataObj, callback){
+    this.View = function(uri, placeId, data, callBack){
         $.ajax({ "type": "GET", "url": uri, "dataType": "html",
             "success": function(viewHtml){
                 //清理特殊字元
                 viewHtml = viewHtml.replace(/\t/g, '');
                 viewHtml = viewHtml.replace(/\n/g, '');
                 viewHtml = viewHtml.replace(/\r/g, '');
-                if(placeId === null || dataObj === {}){
-                    callback(viewHtml);
+                if(placeId === null || data === {}){
+                    callBack(viewHtml);
                     return false;
                 }
-                var viewCreateList = function(listObj, dataObj){
+                var viewCreateList = function(listObj, data){
                     //取得清單名稱
                     var listAttrValue = listObj.attr('be-list');
                     //找不到對應資料就清除清單，並傳回假
-                    if(typeof(dataObj[listAttrValue]) !== 'object'){
+                    if(typeof(data[listAttrValue]) !== 'object'){
                         listObj.empty();
                         return false;
                     }
                     //如果資料數量為零就清除清單，並傳回假
-                    if(dataObj[listAttrValue].length === 0){
+                    if(data[listAttrValue].length === 0){
                         listObj.empty();
                         return false;
                     }
@@ -50,13 +50,13 @@ var Jsmvc2 = function BellaJMVC(){
                     }
                     //從第一筆資料列出資料的屬性名稱 
                     var keyNames = [];
-                    for(var listAttrValueIndex in dataObj[listAttrValue][0]){
+                    for(var listAttrValueIndex in data[listAttrValue][0]){
                         keyNames.push(listAttrValueIndex);
                     }
                     //清除清單內容，準備用DOM填入清單
                     listObj.empty();
                     //迭代各筆資料
-                    for(var rowIndex in dataObj[listAttrValue]){
+                    for(var rowIndex in data[listAttrValue]){
                         var rowHtml = itemHtml;
                         //如果有佔位字元
                         if(itemPlaceholderNames !== null){
@@ -65,7 +65,7 @@ var Jsmvc2 = function BellaJMVC(){
                                 //如果有該屬性的佔位字元，就以物件屬性值覆寫佔位字元
                                 if(itemPlaceholderNames.indexOf(keyNames[key]) !== -1){
                                     rowHtml = rowHtml.replace(new RegExp('\\{\\{' + listAttrValue + '.' + keyNames[key] + '\\}\\}', 'g'), 
-                                                                        dataObj[listAttrValue][rowIndex][keyNames[key]]);
+                                                                        data[listAttrValue][rowIndex][keyNames[key]]);
                                 }
                             }
                         }
@@ -79,7 +79,7 @@ var Jsmvc2 = function BellaJMVC(){
                             var itemValue = nowRow.find('[be-value=\'' + listAttrValue + '.' + keyNames[key] + '\']');
                             if(itemValue.length > 0){
                                 //以DOM方式填入元素內容
-                                itemValue.html(dataObj[listAttrValue][rowIndex][keyNames[key]]);
+                                itemValue.html(data[listAttrValue][rowIndex][keyNames[key]]);
                             }
                         }
                     }
@@ -87,8 +87,8 @@ var Jsmvc2 = function BellaJMVC(){
                 };
                 //找出非物件的屬性鍵值，避免陣列資料
                 var valueNames = [];
-                for(var dataIndex in dataObj){
-                    if(typeof(dataObj[dataIndex]) !== 'object'){
+                for(var dataIndex in data){
+                    if(typeof(data[dataIndex]) !== 'object'){
                         valueNames.push(dataIndex);
                     }
                 }
@@ -96,7 +96,7 @@ var Jsmvc2 = function BellaJMVC(){
                 for(var valueIndex in valueNames){
                     var valuePlaceholderNames = viewHtml.match(new RegExp('\\{\\{' + valueNames[valueIndex] + '\\}\\}', 'g'));
                     if(valuePlaceholderNames !== null){
-                        viewHtml = viewHtml.replace(new RegExp('\\{\\{' + valueNames[valueIndex] + '\\}\\}', 'g'), dataObj[valueNames[valueIndex]]);
+                        viewHtml = viewHtml.replace(new RegExp('\\{\\{' + valueNames[valueIndex] + '\\}\\}', 'g'), data[valueNames[valueIndex]]);
                     }
                 }
                 //將樣版插入區域
@@ -106,7 +106,7 @@ var Jsmvc2 = function BellaJMVC(){
                 for(var valueIndex in valueNames){
                     var value = place.find('[be-value=' + valueNames[valueIndex] + ']');
                     if(value.length > 0){
-                        value.html(dataObj[valueNames[valueIndex]]);
+                        value.html(data[valueNames[valueIndex]]);
                     }
                 }
                 //找出DOM裡的列表根元素
@@ -125,10 +125,12 @@ var Jsmvc2 = function BellaJMVC(){
                     var listObj = place.find('[be-list=' + listNames[listIndex] + ']');
                     //處理清單，同名的清單將迭代處理
                     listObj.each(function(){
-                        viewCreateList($(this), dataObj);
+                        viewCreateList($(this), data);
                     });
                 }
-                callback(place.html());
+                if(typeof(callBack) !== 'undefined'){
+                	callBack(place.html());
+                }
             },
             "error": function(r){ console.log(r); }
         });
