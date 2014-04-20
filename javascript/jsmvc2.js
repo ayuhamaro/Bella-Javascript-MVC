@@ -12,9 +12,17 @@ var Jsmvc2 = function BellaJMVC(){
             "error": function(r){ console.log(r); }
         });
     };
-    this.View = function(uri, placeId, dataObj, callback){
+    this.View = function(uri, dataObj, placeId, callback){
         $.ajax({ "type": "GET", "url": uri, "dataType": "html",
             "success": function(viewHtml){
+                //清理特殊字元
+                viewHtml = viewHtml.replace(/\t/g, '');
+                viewHtml = viewHtml.replace(/\n/g, '');
+                viewHtml = viewHtml.replace(/\r/g, '');
+                if(placeId === null || dataObj === {}){
+                	callback(viewHtml);
+                	return false;
+                }
                 var viewCreateList = function(listObj, dataObj){
                     //取得清單名稱
                     var listAttrValue = listObj.attr('be-list');
@@ -77,10 +85,6 @@ var Jsmvc2 = function BellaJMVC(){
                     }
                     return true;
                 }
-                //清理特殊字元
-                viewHtml = viewHtml.replace(/\t/g, '');
-                viewHtml = viewHtml.replace(/\n/g, '');
-                viewHtml = viewHtml.replace(/\r/g, '');
                 //找出非物件的屬性鍵值，避免陣列資料
                 var valueNames = [];
                 for(var dataIndex in dataObj){
