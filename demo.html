@@ -22,7 +22,7 @@
             
             page.CallBack.go = function(obj){
                 var self = this.o;
-                self.View('view-code.html', obj, 'aaa', function(html){
+                self.View('view-code.html', 'aaa', obj, function(html){
                     console.log(html);
                 });
             }
