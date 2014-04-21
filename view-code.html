@@ -1,10 +1,10 @@
 <div>
-	<span be-value="max"></span><span>{{page}}</span>
+	最大頁數:<span be-value="max"></span><br />
+	目前頁數:<span>{{page}}</span><br />
+	清單:<br />
 	<ul be-list="items">
 		<li>
-			<span be-value="items.id">0</span>
-			<span be-value="items.value">test</span>-
-			<span>{{items.id}}{{items.value}}</span>
+			<a href="#{{items.id}}" be-value="items.id">0</a>:<a href="#{{items.value}}" be-value="items.value">test</a>
 		</li>
 	</ul>
 </div>
