@@ -1,4 +1,4 @@
-var Jsmvc2 = function BellaJMVC(){
+var Jsmvc2 = function BellaJMVC2(){
     this.Ctrl = { o: this };
     this.CallBack = { o: this };
     this.Model = function(uri, callBack, data, extra){
@@ -43,9 +43,9 @@ var Jsmvc2 = function BellaJMVC(){
                     if(itemPlaceholderNames !== null){
                         //清除前綴字符後，建立項目屬性列表
                         itemPlaceholderNames = itemPlaceholderNames.map(function(val){
-                            val = val.replace(new RegExp('\\{\\{' + listAttrValue + '\\.', 'g'), '');
-                            val = val.replace(/\}\}/g, '');
-                            return val;
+                            var pattern = new RegExp('\\{\\{' + listAttrValue + '\\.(.*?)\\}\\}', 'g');
+                            val = pattern.exec(val);
+                            return val[1];
                         });
                     }
                     //從第一筆資料列出資料的屬性名稱 
@@ -64,7 +64,7 @@ var Jsmvc2 = function BellaJMVC(){
                             for(var key in keyNames){
                                 //如果有該屬性的佔位字元，就以物件屬性值覆寫佔位字元
                                 if(itemPlaceholderNames.indexOf(keyNames[key]) !== -1){
-                                    rowHtml = rowHtml.replace(new RegExp('\\{\\{' + listAttrValue + '.' + keyNames[key] + '\\}\\}', 'g'), 
+                                    rowHtml = rowHtml.replace(new RegExp('\\{\\{' + listAttrValue + '\\.' + keyNames[key] + '\\}\\}', 'g'), 
                                                                         data[listAttrValue][rowIndex][keyNames[key]]);
                                 }
                             }
@@ -129,7 +129,7 @@ var Jsmvc2 = function BellaJMVC(){
                     });
                 }
                 if(typeof(callBack) !== 'undefined'){
-                    callBack(place.html());
+                	callBack(place.html());
                 }
             },
             "error": function(r){ console.log(r); }
