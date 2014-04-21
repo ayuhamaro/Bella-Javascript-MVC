@@ -129,7 +129,7 @@ var Jsmvc2 = function BellaJMVC2(){
                     });
                 }
                 if(typeof(callBack) !== 'undefined'){
-                	callBack(place.html());
+                    callBack(place.html());
                 }
             },
             "error": function(r){ console.log(r); }
