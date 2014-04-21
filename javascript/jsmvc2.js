@@ -94,7 +94,7 @@ var Jsmvc2 = function BellaJMVC2(){
                 }
                 //依篩選出的物件屬性值以覆寫佔位字元
                 for(var valueIndex in valueNames){
-                    var valuePlaceholderNames = viewHtml.match(new RegExp('\\{\\{' + valueNames[valueIndex] + '\\}\\}', 'g'));
+                    var valuePlaceholderNames = viewHtml.match(new RegExp('\\{\\{' + valueNames[valueIndex] + '\\}\\}'));
                     if(valuePlaceholderNames !== null){
                         viewHtml = viewHtml.replace(new RegExp('\\{\\{' + valueNames[valueIndex] + '\\}\\}', 'g'), data[valueNames[valueIndex]]);
                     }
