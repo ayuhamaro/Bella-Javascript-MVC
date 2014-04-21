@@ -43,7 +43,7 @@ var Jsmvc2 = function BellaJMVC2(){
                     if(itemPlaceholderNames !== null){
                         //清除前綴字符後，建立項目屬性列表
                         itemPlaceholderNames = itemPlaceholderNames.map(function(val){
-                            var pattern = new RegExp('\\{\\{' + listAttrValue + '\\.(.*?)\\}\\}', 'g');
+                            var pattern = new RegExp('\\{\\{' + listAttrValue + '\\.(.*?)\\}\\}');
                             val = pattern.exec(val);
                             return val[1];
                         });
