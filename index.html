@@ -32,20 +32,38 @@
 							{"id": 3, "desc": "封裝完整的Model功能"},
 							{"id": 4, "desc": "簡單的View樣版引擎"},
 							{"id": 5, "desc": "低耦合設計，組件可單獨使用"},
-							{"id": 6, "desc": "程式輕巧，不到8K"}]
+							{"id": 6, "desc": "程式輕巧，不到8K"},
+							{"id": 7, "desc": "支援所有主流瀏覽器，包含IE5"}]
 			}
 		</pre>
 		<hr>
         <div id="place">來試一下吧</div>
         <button type="button" id="go">測試</button>
+        <h3 class="hide" style="display: none;">只需要以下程式碼</h3>
+        <pre class="prettyprint hide" style="display: none;">
+            var page = new Jsmvc2();
+            page.Ctrl.__init = function(){
+                var self = this.o;
+                $('#go').bind('click', function(){
+                    var rnd = Math.random();
+                    self.Model('ajax-test.html?rnd=' + rnd.toString(), 'go', {});
+                });
+            }
+            page.CallBack.go = function(obj){
+                var self = this.o;
+                var rnd = Math.random();
+                self.View('view-code.html?rnd=' + rnd.toString(), 'place', obj, function(html){});
+            }
+            page.Init();
+        </pre>
         <script type="text/javascript">
-            //程式碼從這裡開始
+        	//程式碼從這裡開始
             var page = new Jsmvc2();
             
             page.Ctrl.__init = function(){
                 var self = this.o;
                 $('#go').bind('click', function(){
-                    var rnd = Math.random();
+                	var rnd = Math.random();
                     self.Model('ajax-test.html?rnd=' + rnd.toString(), 'go', {});	//從ajax-test.html取得JSON，成功即前往回呼控制器go，不傳遞任何資料，不定義擴增參數
                 });
             }
@@ -55,6 +73,7 @@
                 var rnd = Math.random();
                 self.View('view-code.html?rnd=' + rnd.toString(), 'place', obj, function(html){
                     //從view-code.html載入視圖，數據綁定成功後填入元素place，導入來自模型的資料物件obj，完成時進行回呼
+                    $('.hide').show();
                 });
             }
             
