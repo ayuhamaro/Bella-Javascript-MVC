@@ -45,13 +45,15 @@
             page.Ctrl.__init = function(){
                 var self = this.o;
                 $('#go').bind('click', function(){
-                    self.Model('ajax-test.html', 'go', {});	//從ajax-test.html取得JSON，成功即前往回呼控制器go，不傳遞任何資料，不定義擴增參數
+                	var rnd = Math.random();
+                    self.Model('ajax-test.html?rnd=' + rnd.toString(), 'go', {});	//從ajax-test.html取得JSON，成功即前往回呼控制器go，不傳遞任何資料，不定義擴增參數
                 });
             }
             
             page.CallBack.go = function(obj){
                 var self = this.o;
-                self.View('view-code.html', 'place', obj, function(html){
+                var rnd = Math.random();
+                self.View('view-code.html?rnd=' + rnd.toString(), 'place', obj, function(html){
                     //從view-code.html載入視圖，數據綁定成功後填入元素place，導入來自模型的資料物件obj，完成時進行回呼
                 });
             }
