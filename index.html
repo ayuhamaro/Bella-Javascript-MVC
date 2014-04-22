@@ -39,13 +39,13 @@
         <div id="place">來試一下吧</div>
         <button type="button" id="go">測試</button>
         <script type="text/javascript">
-        	//程式碼從這裡開始
+            //程式碼從這裡開始
             var page = new Jsmvc2();
             
             page.Ctrl.__init = function(){
                 var self = this.o;
                 $('#go').bind('click', function(){
-                	var rnd = Math.random();
+                    var rnd = Math.random();
                     self.Model('ajax-test.html?rnd=' + rnd.toString(), 'go', {});	//從ajax-test.html取得JSON，成功即前往回呼控制器go，不傳遞任何資料，不定義擴增參數
                 });
             }
