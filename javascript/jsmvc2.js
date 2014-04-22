@@ -42,7 +42,7 @@ var Jsmvc2 = function BellaJMVC2(){
                     var itemPlaceholderNames = itemHtml.match(/\{\{(.*?)\}\}/g);
                     if(itemPlaceholderNames !== null){
                         //清除前綴字符後，建立項目屬性列表
-                        itemPlaceholderNames = itemPlaceholderNames.map(function(val){
+                        itemPlaceholderNames = $.map(itemPlaceholderNames, function(val){
                             var pattern = new RegExp('\\{\\{' + listAttrValue + '\\.(.*?)\\}\\}');
                             val = pattern.exec(val);
                             return val[1];
@@ -63,7 +63,7 @@ var Jsmvc2 = function BellaJMVC2(){
                             //迭代各屬性
                             for(var key in keyNames){
                                 //如果有該屬性的佔位字元，就以物件屬性值覆寫佔位字元
-                                if(itemPlaceholderNames.indexOf(keyNames[key]) !== -1){
+                                if($.inArray(keyNames[key], itemPlaceholderNames) !== -1){
                                     rowHtml = rowHtml.replace(new RegExp('\\{\\{' + listAttrValue + '\\.' + keyNames[key] + '\\}\\}', 'g'), 
                                                                         data[listAttrValue][rowIndex][keyNames[key]]);
                                 }
@@ -116,7 +116,7 @@ var Jsmvc2 = function BellaJMVC2(){
                 listObjs.each(function(){
                     var listForAttr = $(this).attr('be-list');
                     //忽略同名的清單
-                    if(listNames.indexOf(listForAttr) === -1){
+                    if($.inArray(listForAttr, listNames) === -1){
                         listNames.push(listForAttr);
                     }
                 });
