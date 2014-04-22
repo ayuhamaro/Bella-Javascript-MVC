@@ -1,10 +1,10 @@
 <div>
-	最大頁數:<span be-value="max"></span><br />
-	目前頁數:<span>{{page}}</span><br />
-	清單:<br />
-	<ul be-list="items">
+	<h2>{{greeting}}</h2>
+	<h3 be-value="intro"></h3>
+	<div>特色列表</div>
+	<ul be-list="feature">
 		<li>
-			<a href="#{{items.id}}" be-value="items.id">0</a>:<a href="#{{items.value}}" be-value="items.value">test</a>
+			<a href="#{{feature.id}}" be-value="feature.desc">讀取中</a>
 		</li>
 	</ul>
 </div>
