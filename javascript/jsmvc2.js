@@ -2,13 +2,19 @@ var Jsmvc2 = function BellaJMVC2(){
     this.Ctrl = { o: this };
     this.CallBack = { o: this };
     this.Model = function(uri, callBack, data, extra){
-        if(typeof(data) == 'undefined'){ data = {} }
-        if(typeof(callBack) == 'undefined'){ callBack = null }
+        if(typeof(data) === 'undefined'){ data = {} }
         var self = this;
         $.ajax({ "type": "POST", "url": uri, "data": data, "dataType": "json",
             "success": function(json){
-                if(typeof(json) !== 'object'){ json = $.parseJSON(r) }
-                if(callBack !== null){ self.CallBack[callBack](json, extra); }},
+                if(typeof(callBack) !== 'undefined' && callBack !== null){
+                    if(typeof(json) !== 'object'){ json = $.parseJSON(r) }
+                    if(typeof(callBack) === 'function'){
+                        callBack(json, extra);
+                    }else if(typeof(callBack) === 'string'){
+                        self.CallBack[callBack](json, extra);
+                    }
+                }
+            },
             "error": function(r){ console.log(r); }
         });
     };
@@ -17,7 +23,7 @@ var Jsmvc2 = function BellaJMVC2(){
         $.ajax({ "type": "GET", "url": uri, "dataType": "html",
             "success": function(viewHtml){
                 var rendered = self.Render(viewHtml, placeId, data);
-                if(typeof(callBack) !== 'undefined'){
+                if(typeof(callBack) === 'function'){
                     callBack(rendered);
                 }
             },
@@ -36,7 +42,7 @@ var Jsmvc2 = function BellaJMVC2(){
             //取得清單名稱
             var listAttrValue = listObj.attr('be-list');
             //找不到對應資料就清除清單，並傳回假
-            if(typeof(data[listAttrValue]) !== 'object'){
+            if($.isArray(data[listAttrValue] === false)){
                 listObj.empty();
                 return false;
             }
@@ -97,7 +103,7 @@ var Jsmvc2 = function BellaJMVC2(){
         //找出非物件的屬性鍵值，避免陣列資料
         var valueNames = [];
         for(var dataIndex in data){
-            if(typeof(data[dataIndex]) !== 'object'){
+            if($.isArray(data[dataIndex]) === false){
                 valueNames.push(dataIndex);
             }
         }
