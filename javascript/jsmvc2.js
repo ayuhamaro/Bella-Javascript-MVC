@@ -155,4 +155,12 @@ var Jsmvc2 = function BellaJMVC2(){
             if(i.substring(0,2) == '__'){ this.Ctrl[i](); }
         }
     };
-}
+    //擴充Function
+    this.Func.enterBindBtnClick = function(selector, submitButtonId){
+        $(selector).keydown(function(e){
+            if(e.keyCode === 13){
+                $('#' + submitButtonId).click();
+            }
+        });
+    };
+};
