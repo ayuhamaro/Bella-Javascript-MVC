@@ -3,7 +3,7 @@
     <head>
         <script type="text/javascript" src="http://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-        <script type="text/javascript" src="javascript/jsmvc2.min.js?v=2.2.0"></script>
+        <script type="text/javascript" src="js/jsmvc2.js?v=2.3.0"></script>
         <meta charset='utf-8'>
         <title>Bella 2.0</title>
     </head>
@@ -44,16 +44,14 @@
         <pre class="prettyprint hide" style="display: none;">
     var page = new Jsmvc2('page');
     page.Ctrl.__init = function(){
-        var self = this.o;
         $('#go').bind('click', function(){
             var rnd = Math.random();
-            self.Model('ajax-test.html?rnd=' + rnd.toString(), 'go', {});
-        });
+            this.Model('ajax-test.html?rnd=' + rnd.toString(), 'go', {});
+        }.bind(this));
     }
     page.CallBack.go = function(obj){
-        var self = this.o;
         var rnd = Math.random();
-        self.View('view-code.html?rnd=' + rnd.toString(), 'place', obj, function(html){});
+        this.View('view-code.html?rnd=' + rnd.toString(), 'place', obj, function(html){});
     }
         </pre>
         <script type="text/javascript">
@@ -61,17 +59,15 @@
             var page = new Jsmvc2('page');
             
             page.Ctrl.__init = function(){
-                var self = this.o;
                 $('#go').bind('click', function(){
                     var rnd = Math.random();
-                    self.Model('ajax-test.html?rnd=' + rnd.toString(), 'go', {});    //從ajax-test.html取得JSON，成功即前往回呼控制器go，不傳遞任何資料，不定義擴增參數
-                });
+                    this.Model('ajax-test.html?rnd=' + rnd.toString(), 'go', {});    //從ajax-test.html取得JSON，成功即前往回呼控制器go，不傳遞任何資料，不定義擴增參數
+                }.bind(this));
             }
             
             page.CallBack.go = function(obj){
-                var self = this.o;
                 var rnd = Math.random();
-                self.View('view-code.html?rnd=' + rnd.toString(), 'place', obj, function(html){
+                this.View('view-code.html?rnd=' + rnd.toString(), 'place', obj, function(html){
                     //從view-code.html載入視圖，數據綁定成功後填入元素place，導入來自模型的資料物件obj，完成時進行回呼
                     $('.hide').show();
                 });
