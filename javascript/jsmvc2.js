@@ -1,11 +1,15 @@
 var Jsmvc2 = function BellaJMVC2(name){
-    this.Ctrl = { o: this };
-    this.CallBack = { o: this };
+    this.Ctrl = {};
+    this.CallBack = {};
     this.Var = { o: this };
     var objName = name;
     $(function(){
         if(window[objName] instanceof Jsmvc2){  //IE9以前無法抓到透過var定義的全域變數，只好用指定的
-            window[objName].Init();
+            for(var i in window[objName].Ctrl){            //自動執行控制器裡的所有函式
+                if(typeof(window[objName].Ctrl[i]) === 'function'){
+                    window[objName].Ctrl[i].bind(window[objName])();
+                }
+            }
         }
     });
 };
@@ -19,7 +23,7 @@ Jsmvc2.prototype.Model = function(uri, callBack, data, extra){
                 if(typeof(callBack) === 'function'){
                     callBack(json, extra);
                 }else if(typeof(callBack) === 'string'){
-                    self.CallBack[callBack](json, extra);
+                    self.CallBack[callBack].bind(self)(json, extra);
                 }
             }
         },
@@ -156,11 +160,6 @@ Jsmvc2.prototype.Render = function(viewHtml, placeId, data){
     }
     return place.html();
 };
-Jsmvc2.prototype.Init = function(){
-    for(var i in this.Ctrl){
-        if(i.substring(0,2) == '__'){ this.Ctrl[i](); }
-    }
-};
 Jsmvc2.prototype.Func = { o: this };
 Jsmvc2.prototype.Func.enterBindBtnClick = function(selector, submitButtonId){
     $(selector).keydown(function(e){
@@ -169,3 +168,28 @@ Jsmvc2.prototype.Func.enterBindBtnClick = function(selector, submitButtonId){
         }
     });
 };
+//提供對舊瀏覽器的支援
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function (oThis) {
+    if (typeof this !== "function") {
+      // closest thing possible to the ECMAScript 5
+      // internal IsCallable function
+      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+    }
+
+    var aArgs = Array.prototype.slice.call(arguments, 1), 
+        fToBind = this, 
+        fNOP = function () {},
+        fBound = function () {
+          return fToBind.apply(this instanceof fNOP
+                                 ? this
+                                 : oThis || this,
+                               aArgs.concat(Array.prototype.slice.call(arguments)));
+        };
+
+    fNOP.prototype = this.prototype;
+    fBound.prototype = new fNOP();
+
+    return fBound;
+  };
+}
