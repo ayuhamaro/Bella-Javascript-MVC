@@ -19,7 +19,7 @@ Jsmvc2.prototype.Model = function(uri, callBack, data, extra){
     $.ajax({ "type": "POST", "url": uri, "data": data, "dataType": "json",
         "success": function(json){
             if(typeof(callBack) !== 'undefined' && callBack !== null){
-                if(typeof(json) !== 'object'){ json = $.parseJSON(r) }
+                if(typeof(json) !== 'object'){ json = $.parseJSON(json) }
                 if(typeof(callBack) === 'function'){
                     callBack(json, extra);
                 }else if(typeof(callBack) === 'string'){
